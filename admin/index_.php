@@ -1,5 +1,5 @@
 <?php
-// INDEX ADMIN — KICKZ
+
 session_start();
 require 'src/php/utils/all_includes.php';
 

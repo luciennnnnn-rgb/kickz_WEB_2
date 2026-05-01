@@ -1,1 +1,1 @@
-<?php // Réservé pour inclusion future ?>
+<?php  ?>

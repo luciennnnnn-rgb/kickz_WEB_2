@@ -1,4 +1,4 @@
-<?php // Menu admin — sera complété lors du commit CSS/DA ?>
+<?php  ?>
 <nav id="admin_nav">
     <a href="index_.php?page=accueil.php">Tableau de bord</a>
     <a href="index_.php?page=gestion_chaussures.php">Chaussures</a>

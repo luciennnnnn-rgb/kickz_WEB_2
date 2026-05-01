@@ -1,6 +1,14 @@
 <?php
-// INDEX PUBLIC — KICKZ
+
 session_start();
+
+
+if (isset($_GET['page']) && $_GET['page'] === 'disconnect.php') {
+    session_destroy();
+    header('Location: index_.php');
+    exit;
+}
+
 require 'admin/src/php/utils/all_includes.php';
 ?>
 <!doctype html>
@@ -23,38 +31,40 @@ require 'admin/src/php/utils/all_includes.php';
     <link rel="stylesheet" type="text/css" href="admin/assets/css/style.css">
 </head>
 <body>
-    <div id="wrapper">
-        <header id="header">
+<div id="wrapper">
+    <header id="header">
+        <?php
+        if (file_exists('admin/src/php/utils/public_menu.php')) {
+            include 'admin/src/php/utils/public_menu.php';
+        }
+        ?>
+    </header>
+
+    <main id="main">
+        <section id="contenu">
             <?php
-            if (file_exists('admin/src/php/utils/public_menu.php')) {
-                include 'admin/src/php/utils/public_menu.php';
+            if (!isset($_SESSION['page'])) {
+                $_SESSION['page'] = 'accueil.php';
+            }
+            if (isset($_GET['page'])) {
+                $_SESSION['page'] = $_GET['page'];
+            }
+
+            $root = str_replace('\\', '/', dirname(__FILE__)) . '/';
+            $path = $root . 'content/' . $_SESSION['page'];
+
+            if (file_exists($path)) {
+                include $path;
+            } else {
+                include $root . 'content/page404.php';
             }
             ?>
-        </header>
+        </section>
+    </main>
 
-        <main id="main">
-            <section id="contenu">
-                <?php
-                if (!isset($_SESSION['page'])) {
-                    $_SESSION['page'] = 'accueil.php';
-                }
-                if (isset($_GET['page'])) {
-                    $_SESSION['page'] = $_GET['page'];
-                }
-                $path = 'content/' . $_SESSION['page'];
-
-                if (file_exists($path)) {
-                    include $path;
-                } else {
-                    include 'content/page404.php';
-                }
-                ?>
-            </section>
-        </main>
-
-        <footer id="footer">
-            <p>KICKZ &copy; 2026</p>
-        </footer>
-    </div>
+    <footer id="footer">
+        <p>KICKZ &copy; 2026</p>
+    </footer>
+</div>
 </body>
 </html>
