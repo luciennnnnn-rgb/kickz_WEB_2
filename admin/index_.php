@@ -1,11 +1,13 @@
 <?php
-
 session_start();
-require 'src/php/utils/all_includes.php';
 
-if (isset($_SESSION['admin']) && !isset($_SESSION['page'])) {
-    $_SESSION['page'] = 'accueil.php';
+if (isset($_GET['page']) && $_GET['page'] === 'disconnect.php') {
+    session_destroy();
+    header('Location: index_.php');
+    exit;
 }
+
+require 'src/php/utils/all_includes.php';
 ?>
 <!doctype html>
 <html lang="fr">
@@ -27,42 +29,45 @@ if (isset($_SESSION['admin']) && !isset($_SESSION['page'])) {
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>
-    <div id="wrapper">
-        <header id="header">
+<div id="wrapper">
+    <header id="header">
+        <?php
+        if (file_exists('src/php/utils/admin_menu.php')) {
+            include 'src/php/utils/admin_menu.php';
+        }
+        ?>
+    </header>
+
+    <main id="main">
+        <section id="contenu">
             <?php
-            if (file_exists('src/php/utils/admin_menu.php')) {
-                include 'src/php/utils/admin_menu.php';
+            if (!isset($_SESSION['admin'])) {
+                $path = 'content/login.php';
+            } else {
+                if (isset($_GET['page'])) {
+                    $_SESSION['admin_page'] = $_GET['page'];
+                }
+                if (!isset($_SESSION['admin_page'])) {
+                    $_SESSION['admin_page'] = 'accueil.php';
+                }
+                $path = 'content/' . $_SESSION['admin_page'];
+            }
+
+            $root = str_replace('\\', '/', dirname(__FILE__)) . '/';
+            $path = $root . $path;
+
+            if (file_exists($path)) {
+                include $path;
+            } else {
+                include $root . 'content/page404.php';
             }
             ?>
-        </header>
+        </section>
+    </main>
 
-        <main id="main_admin">
-            <section id="contenu">
-                <?php
-                if (!isset($_SESSION['admin'])) {
-                    $path = 'content/login.php';
-                } else {
-                    if (isset($_GET['page'])) {
-                        $_SESSION['page'] = $_GET['page'];
-                    }
-                    if (!isset($_SESSION['page'])) {
-                        $_SESSION['page'] = 'accueil.php';
-                    }
-                    $path = 'content/' . $_SESSION['page'];
-                }
-
-                if (file_exists($path)) {
-                    include $path;
-                } else {
-                    include 'content/page404.php';
-                }
-                ?>
-            </section>
-        </main>
-
-        <footer id="footer">
-            <p>KICKZ Admin &copy; 2026</p>
-        </footer>
-    </div>
+    <footer id="footer">
+        <p>KICKZ Admin &copy; 2026</p>
+    </footer>
+</div>
 </body>
 </html>

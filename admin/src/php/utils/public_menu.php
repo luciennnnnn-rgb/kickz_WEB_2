@@ -9,9 +9,6 @@
                 <li class="nav-item">
                     <a class="nav-link" href="index_.php?page=accueil.php">Accueil</a>
                 </li>
-                <li class="nav-item">
-                    <a class="nav-link" href="index_.php?page=catalogue.php">Catalogue</a>
-                </li>
             </ul>
             <ul class="navbar-nav ms-auto">
                 <?php if (isset($_SESSION['client'])): ?>

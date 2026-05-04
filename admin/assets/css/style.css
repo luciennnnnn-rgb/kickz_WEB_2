@@ -1,0 +1,95 @@
+:root {
+    --kickz-green: #2d6a4f;
+    --kickz-green-dark: #1b4332;
+    --kickz-green-light: #52b788;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+}
+
+#wrapper {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#main {
+    flex: 1;
+}
+
+/* NAVBAR */
+.navbar.bg-dark {
+    background-color: var(--kickz-green-dark) !important;
+}
+
+.navbar-brand {
+    font-size: 1.5rem;
+    letter-spacing: 2px;
+}
+
+/* BOUTONS */
+.btn-dark {
+    background-color: var(--kickz-green-dark) !important;
+    border-color: var(--kickz-green-dark) !important;
+}
+
+.btn-dark:hover {
+    background-color: var(--kickz-green) !important;
+    border-color: var(--kickz-green) !important;
+}
+
+.btn-outline-dark {
+    color: var(--kickz-green-dark) !important;
+    border-color: var(--kickz-green-dark) !important;
+}
+
+.btn-outline-dark:hover {
+    background-color: var(--kickz-green-dark) !important;
+    color: #fff !important;
+}
+
+/* BADGES */
+.badge.border-dark {
+    border-color: var(--kickz-green-dark) !important;
+    color: var(--kickz-green-dark) !important;
+}
+
+/* PRIX */
+.text-success {
+    color: var(--kickz-green) !important;
+}
+
+/* BANDEAU */
+.bg-success {
+    background-color: var(--kickz-green) !important;
+}
+
+/* FOOTER */
+#footer {
+    background-color: var(--kickz-green-dark);
+    color: #fff;
+    text-align: center;
+    padding: 1rem;
+    margin-top: auto;
+}
+
+/* NAV TABS */
+.nav-tabs .nav-link.active {
+    color: var(--kickz-green-dark);
+    border-color: var(--kickz-green-dark) var(--kickz-green-dark) #fff;
+}
+
+.nav-tabs .nav-link {
+    color: var(--kickz-green);
+}
+
+/* CARDS */
+.card {
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1) !important;
+}

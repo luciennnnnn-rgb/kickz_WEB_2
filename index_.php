@@ -29,6 +29,7 @@ require 'admin/src/php/utils/all_includes.php';
             crossorigin="anonymous" defer></script>
     <script src="admin/assets/js/fonctionsJquery.js" defer></script>
     <link rel="stylesheet" type="text/css" href="admin/assets/css/style.css">
+
 </head>
 <body>
 <div id="wrapper">
