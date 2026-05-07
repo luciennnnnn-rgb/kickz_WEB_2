@@ -24,8 +24,8 @@ require 'src/php/utils/all_includes.php';
           crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"
             integrity="sha384-FKyoEForCGlyvwx9Hj09JcYn3nv7wiPVlz7YYwJrWVcXK/BmnVDxM+D2scQbITxI"
-            crossorigin="anonymous" defer></script>
-    <script src="assets/js/fonctionsJquery.js" defer></script>
+            crossorigin="anonymous"></script>
+    <script src="assets/js/fonctionsJquery.js"></script>
     <link rel="stylesheet" type="text/css" href="assets/css/style.css">
 </head>
 <body>

@@ -1,3 +1,4 @@
+
 <?php
 $commandeDAO = new CommandeDAO($cnx);
 
@@ -14,7 +15,6 @@ $commandes = $commandeDAO->getAllCommandes();
 
 <div class="container py-4">
     <h3 class="fw-bold mb-4">Gestion des commandes</h3>
-
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <table class="table table-hover mb-0">
@@ -46,7 +46,7 @@ $commandes = $commandeDAO->getAllCommandes();
                                     <input type="hidden" name="id_commande" value="<?= $c['id_commande'] ?>">
                                     <div class="form-check mb-0">
                                         <input type="checkbox" class="form-check-input" name="statut_livraison"
-                                            <?= $c['statut_livraison'] ? 'checked' : '' ?>>
+                                                <?= $c['statut_livraison'] ? 'checked' : '' ?>>
                                         <label class="form-check-label">Expédié</label>
                                     </div>
                                     <button type="submit" name="submit_statut" class="btn btn-dark btn-sm">OK</button>

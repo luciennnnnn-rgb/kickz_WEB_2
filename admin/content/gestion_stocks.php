@@ -1,3 +1,4 @@
+
 <?php
 $chaussureDAO = new ChaussureDAO($cnx);
 $pointureDAO  = new InfoPointureDAO($cnx);
@@ -15,7 +16,6 @@ $chaussures = $chaussureDAO->getAllChaussures();
 
 <div class="container py-4">
     <h3 class="fw-bold mb-4">Gestion des stocks</h3>
-
     <div class="card shadow-sm">
         <div class="card-body p-0">
             <table class="table table-hover mb-0">

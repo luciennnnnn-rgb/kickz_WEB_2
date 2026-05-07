@@ -9,5 +9,6 @@ class Chaussure
         public readonly string $marque,
         public readonly float  $prix,
         public readonly string $description,
+        public readonly ?string $image = null,
     ) {}
 }

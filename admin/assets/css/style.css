@@ -18,7 +18,7 @@ body {
     flex: 1;
 }
 
-/* NAVBAR */
+
 .navbar.bg-dark {
     background-color: var(--kickz-green-dark) !important;
 }
@@ -28,7 +28,7 @@ body {
     letter-spacing: 2px;
 }
 
-/* BOUTONS */
+
 .btn-dark {
     background-color: var(--kickz-green-dark) !important;
     border-color: var(--kickz-green-dark) !important;
@@ -49,23 +49,22 @@ body {
     color: #fff !important;
 }
 
-/* BADGES */
 .badge.border-dark {
     border-color: var(--kickz-green-dark) !important;
     color: var(--kickz-green-dark) !important;
 }
 
-/* PRIX */
+
 .text-success {
     color: var(--kickz-green) !important;
 }
 
-/* BANDEAU */
+
 .bg-success {
     background-color: var(--kickz-green) !important;
 }
 
-/* FOOTER */
+
 #footer {
     background-color: var(--kickz-green-dark);
     color: #fff;
@@ -74,7 +73,7 @@ body {
     margin-top: auto;
 }
 
-/* NAV TABS */
+
 .nav-tabs .nav-link.active {
     color: var(--kickz-green-dark);
     border-color: var(--kickz-green-dark) var(--kickz-green-dark) #fff;
@@ -84,7 +83,6 @@ body {
     color: var(--kickz-green);
 }
 
-/* CARDS */
 .card {
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }

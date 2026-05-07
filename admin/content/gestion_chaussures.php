@@ -7,7 +7,6 @@ if (isset($_POST['submit_ajout'])) {
     $marque      = trim($_POST['marque'] ?? '');
     $prix        = (float)($_POST['prix'] ?? 0);
     $description = trim($_POST['description'] ?? '');
-
     if (!empty($modele) && !empty($marque) && $prix > 0) {
         $chaussureDAO->ajoutChaussure($modele, $marque, $prix, $description);
     }
@@ -17,9 +16,16 @@ if (isset($_POST['submit_pointure'])) {
     $id_chaussure = (int)$_POST['id_chaussure'];
     $pointure     = (int)$_POST['pointure'];
     $stock        = (int)$_POST['stock'];
-
     if ($id_chaussure > 0 && $pointure > 0) {
         $pointureDAO->ajoutInfoPointure($pointure, $stock, $id_chaussure);
+    }
+}
+
+if (isset($_POST['submit_image'])) {
+    $id_chaussure = (int)$_POST['id_chaussure_image'];
+    $image        = trim($_POST['image'] ?? '');
+    if ($id_chaussure > 0 && !empty($image)) {
+        $chaussureDAO->updateImage($id_chaussure, $image);
     }
 }
 
@@ -90,6 +96,30 @@ $chaussures = $chaussureDAO->getAllChaussures();
         </div>
     </div>
 
+    <div class="card mb-4 shadow-sm">
+        <div class="card-header fw-semibold">Ajouter / modifier une image</div>
+        <div class="card-body">
+            <form method="post" action="index_.php?page=gestion_chaussures.php">
+                <div class="row g-3">
+                    <div class="col-md-4">
+                        <label class="form-label">Chaussure</label>
+                        <select class="form-select" name="id_chaussure_image" required>
+                            <option value="">-- Choisir --</option>
+                            <?php foreach ($chaussures as $c): ?>
+                                <option value="<?= $c->id_chaussure ?>"><?= htmlspecialchars($c->marque . ' — ' . $c->modele) ?></option>
+                            <?php endforeach; ?>
+                        </select>
+                    </div>
+                    <div class="col-md-8">
+                        <label class="form-label">URL de l'image</label>
+                        <input type="url" class="form-control" name="image" placeholder="" required>
+                    </div>
+                </div>
+                <button type="submit" name="submit_image" class="btn btn-dark mt-3">Enregistrer l'image</button>
+            </form>
+        </div>
+    </div>
+
     <div class="card shadow-sm">
         <div class="card-header fw-semibold">Liste des chaussures</div>
         <div class="card-body p-0">
@@ -97,6 +127,7 @@ $chaussures = $chaussureDAO->getAllChaussures();
                 <thead class="table-dark">
                 <tr>
                     <th>#</th>
+                    <th>Image</th>
                     <th>Marque</th>
                     <th>Modèle</th>
                     <th>Prix</th>
@@ -109,6 +140,13 @@ $chaussures = $chaussureDAO->getAllChaussures();
                     <?php $pointures = $pointureDAO->getPointuresByChaussure($c->id_chaussure); ?>
                     <tr>
                         <td><?= $c->id_chaussure ?></td>
+                        <td>
+                            <?php if ($c->image): ?>
+                                <img src="<?= htmlspecialchars($c->image) ?>" style="width:60px;height:45px;object-fit:cover;" class="rounded">
+                            <?php else: ?>
+                                <span class="text-muted small">—</span>
+                            <?php endif; ?>
+                        </td>
                         <td><?= htmlspecialchars($c->marque) ?></td>
                         <td><?= htmlspecialchars($c->modele) ?></td>
                         <td><?= number_format($c->prix, 2) ?> €</td>
@@ -119,8 +157,7 @@ $chaussures = $chaussureDAO->getAllChaussures();
                         </td>
                         <td>
                             <a href="index_.php?page=gestion_chaussures.php&delete=<?= $c->id_chaussure ?>"
-                               class="btn btn-danger btn-sm"
-                               onclick="return confirm('Supprimer cette chaussure ?')">Supprimer</a>
+                               class="btn btn-danger btn-sm btn-delete-chaussure">Supprimer</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

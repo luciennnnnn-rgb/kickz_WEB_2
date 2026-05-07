@@ -8,6 +8,17 @@ class ChaussureDAO
         $this->_cnx = $_cnx;
     }
 
+    private function hydrate(array $d): Chaussure
+    {
+        return new Chaussure(
+            id_chaussure: (int)$d['id_chaussure'],
+            modele:       (string)$d['modele'],
+            marque:       (string)$d['marque'],
+            prix:         (float)$d['prix'],
+            description:  (string)$d['description'],
+            image:        $d['image'] ?? null,
+        );
+    }
 
     public function getAllChaussures(): ?array
     {
@@ -15,23 +26,12 @@ class ChaussureDAO
         try {
             $stmt = $this->_cnx->prepare($query);
             $stmt->execute();
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return array_map(function ($d) {
-                return new Chaussure(
-                    id_chaussure: (int)$d['id_chaussure'],
-                    modele:       (string)$d['modele'],
-                    marque:       (string)$d['marque'],
-                    prix:         (float)$d['prix'],
-                    description:  (string)$d['description'],
-                );
-            }, $data);
+            return array_map([$this, 'hydrate'], $stmt->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
             print "Erreur getAllChaussures : " . $e->getMessage();
             return null;
         }
     }
-
 
     public function getChaussureById(int $id_chaussure): ?Chaussure
     {
@@ -41,21 +41,12 @@ class ChaussureDAO
             $stmt->bindValue(':id', $id_chaussure);
             $stmt->execute();
             $d = $stmt->fetch(PDO::FETCH_ASSOC);
-            if (!$d) return null;
-
-            return new Chaussure(
-                id_chaussure: (int)$d['id_chaussure'],
-                modele:       (string)$d['modele'],
-                marque:       (string)$d['marque'],
-                prix:         (float)$d['prix'],
-                description:  (string)$d['description'],
-            );
+            return $d ? $this->hydrate($d) : null;
         } catch (PDOException $e) {
             print "Erreur getChaussureById : " . $e->getMessage();
             return null;
         }
     }
-
 
     public function getChaussuresByMarque(string $marque): ?array
     {
@@ -64,23 +55,12 @@ class ChaussureDAO
             $stmt = $this->_cnx->prepare($query);
             $stmt->bindValue(':marque', $marque);
             $stmt->execute();
-            $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-
-            return array_map(function ($d) {
-                return new Chaussure(
-                    id_chaussure: (int)$d['id_chaussure'],
-                    modele:       (string)$d['modele'],
-                    marque:       (string)$d['marque'],
-                    prix:         (float)$d['prix'],
-                    description:  (string)$d['description'],
-                );
-            }, $data);
+            return array_map([$this, 'hydrate'], $stmt->fetchAll(PDO::FETCH_ASSOC));
         } catch (PDOException $e) {
             print "Erreur getChaussuresByMarque : " . $e->getMessage();
             return null;
         }
     }
-
 
     public function ajoutChaussure(string $modele, string $marque, float $prix, string $description): ?int
     {
@@ -103,6 +83,23 @@ class ChaussureDAO
         }
     }
 
+    public function updateImage(int $id_chaussure, string $image): bool
+    {
+        $query = "UPDATE chaussure SET image = :image WHERE id_chaussure = :id";
+        try {
+            $this->_cnx->beginTransaction();
+            $stmt = $this->_cnx->prepare($query);
+            $stmt->bindValue(':image', $image);
+            $stmt->bindValue(':id',    $id_chaussure);
+            $stmt->execute();
+            $this->_cnx->commit();
+            return true;
+        } catch (PDOException $e) {
+            $this->_cnx->rollBack();
+            print "Erreur updateImage : " . $e->getMessage();
+            return false;
+        }
+    }
 
     public function updateChampChaussure(int $id_chaussure, string $champ, string $valeur): bool
     {
@@ -110,9 +107,9 @@ class ChaussureDAO
         try {
             $this->_cnx->beginTransaction();
             $stmt = $this->_cnx->prepare($query);
-            $stmt->bindValue(':id',    $id_chaussure);
-            $stmt->bindValue(':champ', $champ);
-            $stmt->bindValue(':valeur',$valeur);
+            $stmt->bindValue(':id',     $id_chaussure);
+            $stmt->bindValue(':champ',  $champ);
+            $stmt->bindValue(':valeur', $valeur);
             $stmt->execute();
             $this->_cnx->commit();
             return true;
@@ -123,7 +120,6 @@ class ChaussureDAO
         }
     }
 
-    // Supprime une chaussure via la fonction plpgsql
     public function effacerChaussure(int $id_chaussure): bool
     {
         $query = "SELECT effacer_chaussure(:id)";

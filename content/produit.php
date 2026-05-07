@@ -59,7 +59,7 @@ if (isset($_POST['submit_panier'])) {
 
     <div class="row g-5">
         <div class="col-md-6">
-            <img src="https://placehold.co/600x500?text=<?= urlencode($chaussure->modele) ?>"
+            <img src="<?= $chaussure->image ? htmlspecialchars($chaussure->image) : 'https://placehold.co/600x500?text=' . urlencode($chaussure->modele) ?>"
                  class="img-fluid rounded shadow"
                  alt="<?= htmlspecialchars($chaussure->modele) ?>">
         </div>

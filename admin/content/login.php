@@ -4,17 +4,13 @@ if (isset($_POST['submit_login'])) {
     $mot_de_passe = trim($_POST['mot_de_passe'] ?? '');
 
     if (!empty($login) && !empty($mot_de_passe)) {
-        $query = "SELECT * FROM get_admin(:login::text, :mdp::text)";
-        $stmt  = $cnx->prepare($query);
-        $stmt->bindValue(':login', $login);
-        $stmt->bindValue(':mdp',   $mot_de_passe);
-        $stmt->execute();
-        $admin = $stmt->fetch(PDO::FETCH_ASSOC);
+        $adminDAO = new AdminDAO($cnx);
+        $admin    = $adminDAO->getAdmin($login, $mot_de_passe);
 
         if ($admin) {
             $_SESSION['admin'] = [
-                'id_admin' => $admin['id_admin'],
-                'login'    => $admin['login'],
+                    'id_admin' => $admin->id_admin,
+                    'login'    => $admin->login,
             ];
             header('Location: index_.php');
             exit;
