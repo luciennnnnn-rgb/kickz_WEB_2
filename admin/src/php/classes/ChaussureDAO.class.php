@@ -33,6 +33,20 @@ class ChaussureDAO
         }
     }
 
+    public function rechercherChaussures(string $search): ?array
+    {
+        $query = "SELECT * FROM chaussure WHERE LOWER(modele) LIKE LOWER(:q) OR LOWER(marque) LIKE LOWER(:q) ORDER BY id_chaussure";
+        try {
+            $stmt = $this->_cnx->prepare($query);
+            $stmt->bindValue(':q', '%' . $search . '%');
+            $stmt->execute();
+            return $stmt->fetchAll(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            print "Erreur rechercherChaussures : " . $e->getMessage();
+            return null;
+        }
+    }
+
     public function getChaussureById(int $id_chaussure): ?Chaussure
     {
         $query = "SELECT * FROM chaussure WHERE id_chaussure = :id";
@@ -85,12 +99,12 @@ class ChaussureDAO
 
     public function updateImage(int $id_chaussure, string $image): bool
     {
-        $query = "UPDATE chaussure SET image = :image WHERE id_chaussure = :id";
+        $query = "SELECT update_image(:id, :image)";
         try {
             $this->_cnx->beginTransaction();
             $stmt = $this->_cnx->prepare($query);
-            $stmt->bindValue(':image', $image);
             $stmt->bindValue(':id',    $id_chaussure);
+            $stmt->bindValue(':image', $image);
             $stmt->execute();
             $this->_cnx->commit();
             return true;

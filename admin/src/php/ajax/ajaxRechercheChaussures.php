@@ -7,12 +7,8 @@ $cnx = Connexion::getInstance($dsn, $user, $pass);
 
 $search = trim($_GET['q'] ?? '');
 
-$query = "SELECT * FROM chaussure WHERE LOWER(modele) LIKE LOWER(:q) OR LOWER(marque) LIKE LOWER(:q) ORDER BY id_chaussure";
-$stmt  = $cnx->prepare($query);
-$stmt->bindValue(':q', '%' . $search . '%');
-$stmt->execute();
-$data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+$chaussureDAO = new ChaussureDAO($cnx);
+$data = $chaussureDAO->rechercherChaussures($search);
 
 header('Content-Type: application/json');
 echo json_encode($data);
-
